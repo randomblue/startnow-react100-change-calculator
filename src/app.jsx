@@ -4,26 +4,58 @@ class App extends Component {
   constructor() {
     super();
     this.state = {
-      amountReceived:'',
-      amountDue:'',
-      changeDue:'',
-      twenties:'',
-      tens:'',
-      fives:'',
-      ones:'',
-      quarters:'',
-      dimes:'',
-      nickels:'',
-      pennies:'',
+      amountReceived:0,
+      amountDue:0,
+      totalChange:0,
+      twenties:0,
+      tens:0,
+      fives:0,
+      ones:0,
+      quarters:0,
+      dimes:0,
+      nickels:0,
+      pennies:0,
     }
 
     this.changeHandler = this.changeHandler.bind(this)
     this.clickToCalculate = this.clickToCalculate.bind(this)
     
+    
   }
 
 clickToCalculate(i){
+  // const amountDue = parseFloat(document.getElementById('amount-due').value);
+  // const amountReceived = parseFloat(document.getElementById('amount-received').value);
+  var totalChange =  Math.round((this.state.amountReceived - this.state.amountDue) * 100) / 100
+  var cashBack = (this.state.amountReceived - this.state.amountDue) * 100.0;
+  const twenties =  parseInt(cashBack/2000);                    cashBack %= 2000;
+  const tens =      parseInt(cashBack/1000);                    cashBack %= 1000;
+  const fives =     parseInt(cashBack/500);                     cashBack %= 500;
+  const ones =      parseInt(cashBack/100);                     cashBack %= 100;
+  const quarters =  parseInt(cashBack/25);                      cashBack %= 25;
+  const dimes =     parseInt(cashBack/10);                      cashBack %= 10;
+  const nickels  =  parseInt(cashBack/5);                       cashBack %= 5;
+  const pennies =   Math.round(cashBack);                       
 
+  // console.log(twenties);
+  // console.log(ones);
+  // console.log(quarters);
+  // console.log(dimes);
+  // console.log('pennies' + pennies);
+  // console.log(cashBack)
+  
+  this.setState({
+    totalChange,
+    twenties,
+    tens,
+    fives,
+    ones,
+    quarters,
+    dimes,
+    nickels,
+    pennies
+  }, () => console.log(this.state) 
+)
 }
 
 changeHandler(e) {
@@ -32,29 +64,6 @@ changeHandler(e) {
   }, () => console.log(this.state))
 
 }
-
-//   clickToCalculate(e) {
-//     const amountDue = document.getElementById('amount-due').value
-//     const amountReceived = document.getElementById('amount-received').value
-//     const cashBack = parseFloat(amountReceived) - parseFloat(amountDue)
-//     const ones = Math.floor(cashBack);
-//         cashBack = cashBack%1;
-//     const quarters = Math.floor(cashBack/0.25);
-//         cashBack = cashBack%0.25;
-//     const dimes = Math.floor(cashBack/0.1);
-//         cashBack = cashBack%0.1;
-//     const nickles = Math.floor(cashBack/0.05);
-//         cashBack = (cashBack%0.05);
-//     const pennies = Math.ceil(Math.round(cashBack/0.01));
-//     console.log({cashBack, pennies, nickles})
-
-//     document.getElementById('ones-output').innerHTML = ones;
-//     document.getElementById('quarters-output').innerHTML = quarters;
-//     document.getElementById('dimes-output').innerHTML = dimes;
-//     document.getElementById('nickels-output').innerHTML = nickles;
-//     document.getElementById('pennies-output').innerHTML = pennies;
-// }
-
 
   render() {
     return (
@@ -98,7 +107,7 @@ changeHandler(e) {
             <div className="row">
             <div className="col">
             <div className="card mb-2 text-center" >
-            <label name="changeDue" onChange={this.changeHandler}>The total change due is $$</label>
+            <div className='alert alert-success' name="changeDue">The total change due is ${this.state.totalChange}</div>
             </div>
             </div>
             </div>
@@ -108,28 +117,28 @@ changeHandler(e) {
               <div className="col">
               <div className="card text-center p-3 mb-2">
                 <label>TWENTIES</label>
-                <p id='twenties-output' name='twenties'>0</p>
+                <p className='lead' id='twenties-output' name='twenties' >{this.state.twenties}</p>
               </div>
               </div>
 
               <div className="col">
               <div className="card text-center p-3 mb-2">
                 <label>TENS</label>
-                <p id='tens-output' name='tens'>0</p>
+                <p  className='lead' id='tens-output' name='tens'>{this.state.tens}</p>
               </div>
               </div>
 
               <div className="col">
               <div className="card text-center p-3 mb-2">
                 <label>FIVES</label>
-                <p id='fives-output' name='fives'>0</p>
+                <p className='lead' id='fives-output' name='fives'>{this.state.fives}</p>
               </div>
               </div>
 
               <div className="col">
               <div className="card text-center p-3 mb-2">
                 <label>ONES</label>
-                <p id='ones-output' name='ones'>0</p>
+                <p className='lead' id='ones-output' name='ones'>{this.state.ones}</p>
               </div>
               </div>
               </div>
@@ -138,28 +147,28 @@ changeHandler(e) {
             <div className="col">
               <div className="card text-center p-3 mb-2">
                 <label>QUARTERS</label>
-                <p id='quarters-output' name='quarters'>0</p>
+                <p className='lead' id='quarters-output' name='quarters'>{this.state.quarters}</p>
               </div>
               </div>
 
               <div className="col">
               <div className="card text-center p-3 mb-2">
                 <label>DIMES</label>
-                <p id='dimes-output' name='dimes'>0</p>
+                <p className='lead' id='dimes-output' name='dimes'>{this.state.dimes}</p>
               </div>
               </div>
 
               <div className="col">
               <div className="card text-center p-3 mb-2">
                 <label>NICKELS</label>
-                <p id='nickels-output' name='nickels'>0</p>
+                <p className='lead' id='nickels-output' name='nickels'>{this.state.nickels}</p>
               </div>
               </div>
 
               <div className="col">  
               <div className="card text-center p-3 mb-2">
                 <label>PENNIES</label>
-                <p id='pennies-output' name='pennies'>0</p>
+                <p className='lead' id='pennies-output' name='pennies'>{this.state.pennies}</p>
               </div>
               </div>
             </div>
